@@ -1,0 +1,29 @@
+object MainForm: TMainForm
+  Left = 350
+  Height = 457
+  Top = 250
+  Width = 732
+  Caption = 'DCS Utilities'
+  ClientHeight = 457
+  ClientWidth = 732
+  LCLVersion = '4.6.0.0'
+  object MainPageCtrl: TPageControl
+    AnchorSideLeft.Control = Owner
+    AnchorSideTop.Control = Owner
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    AnchorSideBottom.Control = Owner
+    AnchorSideBottom.Side = asrBottom
+    Left = 0
+    Height = 457
+    Top = 0
+    Width = 732
+    ActivePage = QnhQfe
+    Anchors = [akTop, akLeft, akRight, akBottom]
+    TabIndex = 0
+    TabOrder = 0
+    object QnhQfe: TTabSheet
+      Caption = 'QNH, QFE'
+    end
+  end
+end
