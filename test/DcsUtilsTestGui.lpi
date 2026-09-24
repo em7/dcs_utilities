@@ -5,9 +5,10 @@
     <PathDelim Value="\"/>
     <General>
       <SessionStorage Value="InProjectDir"/>
-      <Title Value="DcsUtilsTest"/>
-      <UseAppBundle Value="False"/>
+      <Title Value="DcsUtilsTestGui"/>
       <ResourceType Value="res"/>
+      <UseXPManifest Value="True"/>
+      <Icon Value="0"/>
     </General>
     <BuildModes>
       <Item Name="Default" Default="True"/>
@@ -21,12 +22,18 @@
     </RunParams>
     <RequiredPackages>
       <Item>
+        <PackageName Value="fpcunittestrunner"/>
+      </Item>
+      <Item>
+        <PackageName Value="LCL"/>
+      </Item>
+      <Item>
         <PackageName Value="FCL"/>
       </Item>
     </RequiredPackages>
     <Units>
       <Unit>
-        <Filename Value="DcsUtilsTest.lpr"/>
+        <Filename Value="DcsUtilsTestGui.lpr"/>
         <IsPartOfProject Value="True"/>
       </Unit>
       <Unit>
@@ -44,7 +51,7 @@
     <Version Value="11"/>
     <PathDelim Value="\"/>
     <Target>
-      <Filename Value="DcsUtilsTest"/>
+      <Filename Value="DcsUtilsTestGui"/>
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
@@ -55,6 +62,11 @@
       <Debugging>
         <DebugInfoType Value="dsDwarf3"/>
       </Debugging>
+      <Options>
+        <Win32>
+          <GraphicApplication Value="True"/>
+        </Win32>
+      </Options>
     </Linking>
   </CompilerOptions>
   <Debugging>

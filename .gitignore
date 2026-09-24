@@ -83,3 +83,6 @@ modules/
 
 **/lib/**
 **/backup/**
+**/*.app/
+**/*.DS_Store
+**/*.Thumbs.db

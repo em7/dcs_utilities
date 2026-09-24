@@ -18,14 +18,23 @@
         <Filename Value="test_qnhqfecalc.pas"/>
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="16"/>
+        <TopLine Value="14"/>
         <UsageCount Value="20"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="..\qnhqfecalc.pas"/>
+        <UnitName Value="QnhQfeCalc"/>
+        <UsageCount Value="20"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\ui_components\qnhqfecalc.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="QnhQfeCalc"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
         <UsageCount Value="20"/>
       </Unit>
     </Units>
@@ -35,18 +44,16 @@
       <Modes ActiveMode="default">
         <Mode Name="default">
           <local>
-            <LaunchingApplication Use="True" PathPlusParams="C:\Windows\system32\cmd.exe /K ${TargetCmdLine}"/>
+            <LaunchingApplication Use="True" PathPlusParams="C:\Windows\system32\cmd.exe \K ${TargetCmdLine}"/>
           </local>
         </Mode>
       </Modes>
     </RunParams>
     <HistoryLists>
-      <List Name="WorkingDirectory" Type="File" Count="1"/>
       <List Name="LaunchingApplication" Type="File" Count="2">
         <Item1 Value="C:\Windows\system32\cmd.exe /K ${TargetCmdLine}"/>
         <Item2 Value="C:\Windows\system32\cmd.exe /C ${TargetCmdLine}"/>
       </List>
-      <List Name="CommandLineParameters" Count="1"/>
     </HistoryLists>
   </ProjectSession>
 </CONFIG>

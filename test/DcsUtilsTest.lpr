@@ -3,7 +3,7 @@ program DcsUtilsTest;
 {$mode objfpc}{$H+}
 
 uses
-  Classes, consoletestrunner, test_qnhqfecalc;
+  Classes, consoletestrunner, test_qnhqfecalc, QnhQfeCalc;
 
 type
 

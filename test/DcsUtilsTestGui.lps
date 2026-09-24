@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <PathDelim Value="\"/>
+    <Version Value="12"/>
+    <BuildModes Active="Default"/>
+    <Units>
+      <Unit>
+        <Filename Value="DcsUtilsTestGui.lpr"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit>
+      <Unit>
+        <Filename Value="test_qnhqfecalc.pas"/>
+        <IsPartOfProject Value="True"/>
+        <IsVisibleTab Value="True"/>
+        <TopLine Value="46"/>
+        <CursorPos X="3" Y="59"/>
+        <UsageCount Value="20"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\ui_components\qnhqfecalc.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="QnhQfeCalc"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="43"/>
+        <CursorPos X="26" Y="64"/>
+        <UsageCount Value="20"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\qnhqfecalc.pas"/>
+        <UnitName Value="QnhQfeCalc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="24"/>
+        <CursorPos X="27" Y="50"/>
+        <UsageCount Value="20"/>
+      </Unit>
+      <Unit>
+        <Filename Value="testcase1.pas"/>
+        <UnitName Value="TestCase1"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="80" Y="8"/>
+        <UsageCount Value="20"/>
+      </Unit>
+    </Units>
+    <JumpHistory HistoryIndex="3">
+      <Position>
+        <Filename Value="test_qnhqfecalc.pas"/>
+        <Caret Line="52" Column="23" TopLine="26"/>
+      </Position>
+      <Position>
+        <Filename Value="..\ui_components\qnhqfecalc.pas"/>
+        <Caret Line="64" Column="27" TopLine="38"/>
+      </Position>
+      <Position>
+        <Filename Value="test_qnhqfecalc.pas"/>
+        <Caret Line="19" Column="38"/>
+      </Position>
+      <Position>
+        <Filename Value="test_qnhqfecalc.pas"/>
+        <Caret Line="45" Column="25" TopLine="27"/>
+      </Position>
+    </JumpHistory>
+    <RunParams>
+      <FormatVersion Value="2"/>
+      <Modes ActiveMode=""/>
+    </RunParams>
+  </ProjectSession>
+</CONFIG>

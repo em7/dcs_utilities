@@ -10,7 +10,11 @@ uses
 function QnhToQfe(AQnhHpa, AElevationFeet: Double): Double;
 function QfeToQnh(AQfeHpa, AElevationFeet: Double): Double;
 function HpaToInHg(APressureHpa: Double): Double;
+function InHgToHpa(APressureInHg: Double): Double;
 function HpaToMmHg(APressureHpa: Double): Double;
+function MmHgToHpa(APressureMmHg: Double): Double;
+function FeetToMeters(AFeet: Double): Double;
+function MetersToFeet(AMeter: Double): Double;
 
 implementation
 
@@ -45,10 +49,29 @@ begin
   Result := APressureHpa * InHgPerHpa;
 end;
 
+function InHgToHpa(APressureInHg: Double): Double;
+begin
+  Result := APressureInHg / InHgPerHpa;
+end;
+
 function HpaToMmHg(APressureHpa: Double): Double;
 begin
   Result := APressureHpa * MmHgPerHpa;
 end;
 
-end.
+function MmHgToHpa(APressureMmHg: Double): Double;
+begin
+  Result := APressureMmHg / MmHgPerHpa;
+end;
 
+function FeetToMeters(AFeet: Double): Double;
+begin
+  Result := AFeet * MetersPerFoot;
+end;
+
+function MetersToFeet(AMeter: Double): Double;
+begin
+  Result := AMeter / MetersPerFoot;
+end;
+
+end.
