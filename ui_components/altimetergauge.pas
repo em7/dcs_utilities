@@ -18,6 +18,8 @@ type
     procedure SetAltitude(AValue: Double);
     procedure SetPressureInHg(AValue: Double);
     procedure DrawDialFace(ACanvas: TCanvas; const ARect: TRect);
+    procedure DrawDialTicks(ACanvas: TCanvas; const ARect: TRect);
+    procedure DrawUnitCaption(ACanvas: TCanvas; const ARect: TRect; AYOffset: Double; const AText: string);
     procedure DrawDialNumbers(ACanvas: TCanvas; const ARect: TRect);
     procedure DrawDialNumbersTwoRing(ACanvas: TCanvas; const ARect: TRect);
     procedure DrawNeedle(ACanvas: TCanvas; const ARect: TRect);
@@ -123,6 +125,62 @@ begin
   ACanvas.Pen.Width := 1;
 end;
 
+procedure TAltimeterGauge.DrawDialTicks(ACanvas: TCanvas; const ARect: TRect);
+var
+  DialSize, CenterX, CenterY, D: Integer;
+  Angle, InnerRadius, OuterRadius: Double;
+begin
+  DialSize := Min(ARect.Width, ARect.Height);
+  if DialSize <= 0 then
+    Exit;
+  CenterX := (ARect.Left + ARect.Right) div 2;
+  CenterY := (ARect.Top + ARect.Bottom) div 2;
+  OuterRadius := DialSize / 2 * 0.94;
+  ACanvas.Pen.Color := clSilver;
+  for D := 0 to 19 do
+  begin
+    // One revolution is 1000 feet/meters; each step marks 50 units.
+    Angle := -Pi / 2 + D * Pi / 10;
+    if D mod 2 = 0 then
+    begin
+      InnerRadius := DialSize / 2 * 0.88;
+      ACanvas.Pen.Width := Max(1, DialSize div 100);
+    end
+    else
+    begin
+      InnerRadius := DialSize / 2 * 0.91;
+      ACanvas.Pen.Width := 1;
+    end;
+    ACanvas.MoveTo(CenterX + Round(InnerRadius * Cos(Angle)),
+      CenterY + Round(InnerRadius * Sin(Angle)));
+    ACanvas.LineTo(CenterX + Round(OuterRadius * Cos(Angle)),
+      CenterY + Round(OuterRadius * Sin(Angle)));
+  end;
+  ACanvas.Pen.Width := 1;
+end;
+
+procedure TAltimeterGauge.DrawUnitCaption(ACanvas: TCanvas; const ARect: TRect;
+  AYOffset: Double; const AText: string);
+var
+  DialSize, CenterX, CenterY: Integer;
+  TextSize: TSize;
+begin
+  DialSize := Min(ARect.Width, ARect.Height);
+  if DialSize <= 0 then
+    Exit;
+  CenterX := (ARect.Left + ARect.Right) div 2;
+  CenterY := (ARect.Top + ARect.Bottom) div 2;
+  ACanvas.Font.Name := 'Default';
+  ACanvas.Font.Style := [];
+  ACanvas.Font.Color := clSilver;
+  ACanvas.Font.Height := -Max(1, Round(DialSize * 0.045));
+  TextSize := ACanvas.TextExtent(AText);
+  ACanvas.Brush.Style := bsClear;
+  ACanvas.TextOut(CenterX - TextSize.cx div 2,
+    CenterY + Round(DialSize * AYOffset) - TextSize.cy div 2, AText);
+  ACanvas.Brush.Style := bsSolid;
+end;
+
 procedure TAltimeterGauge.DrawDialNumbers(ACanvas: TCanvas; const ARect: TRect);
 var
   DialSize: Integer;
@@ -176,7 +234,7 @@ begin
   DialSize := Min(ARect.Width, ARect.Height);
   CenterX := (ARect.Left + ARect.Right) div 2;
   CenterY := (ARect.Top + ARect.Bottom) div 2;
-  OuterRadius := DialSize / 2 * 0.85;
+  OuterRadius := DialSize / 2 * 0.78;
   // InnerRadius=0.33: south-most digit extent ~0.19*DialSize, clears the meters
   // Kollsman window top (0.38*DialSize) with ~0.19*DialSize margin
   InnerRadius := DialSize / 2 * 0.33;
@@ -429,7 +487,9 @@ begin
 
   // left dial: feet, unchanged behavior, just rendered into the left half-rect
   DrawDialFace(Canvas, LeftRect);
+  DrawDialTicks(Canvas, LeftRect);
   DrawDialNumbers(Canvas, LeftRect);
+  DrawUnitCaption(Canvas, LeftRect, -0.18, 'feet x100');
   DrawNeedle(Canvas, LeftRect);
   DrawDrumReadout(Canvas, LeftRect);
 
@@ -452,7 +512,10 @@ begin
 
   // right dial: meters
   DrawDialFace(Canvas, RightRect);
+  DrawDialTicks(Canvas, RightRect);
   DrawDialNumbersTwoRing(Canvas, RightRect);
+  DrawUnitCaption(Canvas, RightRect, -0.275, 'meters x100');
+  DrawUnitCaption(Canvas, RightRect, 0.245, 'meters x1000');
   DrawDoubleNeedle(Canvas, RightRect);
 
   DialSize := Min(RightRect.Width, RightRect.Height);

@@ -1,7 +1,7 @@
 ---
 name: planner
 description: Produce concise implementation plans for this Lazarus / Free Pascal project before code is written.
-model: gpt-6-sol
+model: gpt-6-luna
 model_reasoning_effort: high
 ---
 

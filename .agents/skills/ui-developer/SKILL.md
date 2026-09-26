@@ -2,6 +2,7 @@
 name: ui-developer
 description: Create and modify Lazarus UI forms, controls, layouts, and event wiring for this project.
 model: gpt-6-luna
+model_reasoning_effort: medium
 ---
 
 # UI Developer

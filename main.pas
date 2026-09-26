@@ -6,13 +6,21 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ComCtrls, Spin,
-  StdCtrls, AltimeterGauge, QnhQfeCalc;
+  StdCtrls, AltimeterGauge, QnhQfeCalc, AirspeedGauge, AirspeedCalc;
 
 type
 
   { TMainForm }
 
   TMainForm = class(TForm)
+    Airspeed: TTabSheet;
+    AirspeedGaugeCtrl: TAirspeedGauge;
+    AirspeedKnotsLabel: TLabel;
+    AirspeedMphLabel: TLabel;
+    AirspeedKmhLabel: TLabel;
+    AirspeedKnotsSpinEdit: TSpinEdit;
+    AirspeedMphSpinEdit: TSpinEdit;
+    AirspeedKmhSpinEdit: TSpinEdit;
     Altimeter: TTabSheet;
     AltimeterGaugeCtrl: TAltimeterGauge;
     AltitudeLabel: TLabel;
@@ -29,6 +37,7 @@ type
 				PressureMmSpinEdit: TSpinEdit;
 
 				procedure AltitudeMSpinEditChange(Sender: TObject);
+    procedure AirspeedSpinEditChange(Sender: TObject);
     procedure AltitudeSpinEditChange(Sender: TObject);
 				procedure MainPageCtrlChange(Sender: TObject);
 				procedure PressureHpaSpinEditChange(Sender: TObject);
@@ -39,6 +48,7 @@ type
     // Stops updating UI to distinguish between update made by user
     // and auto-updates from the code.
     StopUiUpdate: Boolean;
+    UpdatingAirspeed: Boolean;
   public
     constructor Create(AOwner: TComponent); override;
   end;
@@ -56,6 +66,30 @@ constructor TMainForm.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
   StopUiUpdate := False;
+end;
+
+procedure TMainForm.AirspeedSpinEditChange(Sender: TObject);
+var
+  Knots: Double;
+begin
+  if UpdatingAirspeed or (csLoading in ComponentState) then
+    Exit;
+  if Sender = AirspeedMphSpinEdit then
+    Knots := MphToKnots(AirspeedMphSpinEdit.Value)
+  else if Sender = AirspeedKmhSpinEdit then
+    Knots := KmhToKnots(AirspeedKmhSpinEdit.Value)
+  else
+    Knots := AirspeedKnotsSpinEdit.Value;
+  UpdatingAirspeed := True;
+  try
+    AirspeedGaugeCtrl.AirspeedKnots := Knots;
+    Knots := AirspeedGaugeCtrl.AirspeedKnots;
+    AirspeedKnotsSpinEdit.Value := Knots;
+    AirspeedMphSpinEdit.Value := KnotsToMph(Knots);
+    AirspeedKmhSpinEdit.Value := KnotsToKmh(Knots);
+  finally
+    UpdatingAirspeed := False;
+  end;
 end;
 
 procedure TMainForm.AltitudeSpinEditChange(Sender: TObject);
@@ -125,4 +159,3 @@ initialization
   RegisterClass(TSpinEdit);
 
 end.
-

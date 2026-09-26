@@ -38,6 +38,15 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="QnhQfeCalc"/>
       </Unit>
+      <Unit>
+        <Filename Value="test_airspeedcalc.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\ui_components\airspeedcalc.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="AirspeedCalc"/>
+      </Unit>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

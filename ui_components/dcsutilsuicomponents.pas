@@ -8,13 +8,14 @@ unit DcsUtilsUIComponents;
 interface
 
 uses
-   AltimeterGauge, QnhQfeCalc, LazarusPackageIntf;
+   AltimeterGauge, QnhQfeCalc, AirspeedGauge, AirspeedCalc, LazarusPackageIntf;
 
 implementation
 
 procedure Register;
 begin
   RegisterUnit('AltimeterGauge', @AltimeterGauge.Register);
+  RegisterUnit('AirspeedGauge', @AirspeedGauge.Register);
 end;
 
 initialization

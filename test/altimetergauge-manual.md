@@ -19,4 +19,11 @@ The values are rounded to three decimals; the gauge rounds converted meters.
 - At `Altitude = 820.210` feet (250 meters), check that the metric long needle
   points right while its short needle is just clockwise of the top.
 - Compare the left imperial dial and pressure windows with the previous build
-  at the same altitude and pressure: their appearance and readings should match.
+  at the same altitude and pressure: the readings and needle positions should match.
+
+- Check both outer scales have ticks every 50 units (20 per revolution), with
+  longer ticks at each numbered 100-unit mark.
+- Check the left caption reads feet x100 above the drum; the right captions
+  read meters x100 above the inner ring and meters x1000 below it.
+  Captions must remain clear of scale numbers, the drum, and pressure windows
+  at the default 400 x 200 size and when enlarged.

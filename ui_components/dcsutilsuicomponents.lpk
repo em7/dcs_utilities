@@ -19,6 +19,15 @@
         <Filename Value="qnhqfecalc.pas"/>
         <UnitName Value="QnhQfeCalc"/>
       </Item>
+      <Item>
+        <Filename Value="airspeedgauge.pas"/>
+        <HasRegisterProc Value="True"/>
+        <UnitName Value="AirspeedGauge"/>
+      </Item>
+      <Item>
+        <Filename Value="airspeedcalc.pas"/>
+        <UnitName Value="AirspeedCalc"/>
+      </Item>
     </Files>
     <RequiredPkgs>
       <Item>

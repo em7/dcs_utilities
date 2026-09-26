@@ -163,5 +163,73 @@ object MainForm: TMainForm
         OnChange = PressureMmSpinEditChange
       end
     end
+    object Airspeed: TTabSheet
+      Caption = 'Airspeed'
+      ClientHeight = 429
+      ClientWidth = 724
+      object AirspeedGaugeCtrl: TAirspeedGauge
+        Left = 16
+        Height = 200
+        Top = 16
+        Width = 400
+      end
+      object AirspeedKnotsLabel: TLabel
+        Left = 16
+        Height = 15
+        Top = 221
+        Width = 100
+        Caption = 'Airspeed (knots)'
+        FocusControl = AirspeedKnotsSpinEdit
+      end
+      object AirspeedKnotsSpinEdit: TSpinEdit
+        Left = 16
+        Height = 23
+        Top = 236
+        Width = 120
+        Increment = 1
+        MaxValue = 900
+        MinValue = 0
+        TabOrder = 0
+        OnChange = AirspeedSpinEditChange
+      end
+      object AirspeedMphLabel: TLabel
+        Left = 16
+        Height = 15
+        Top = 269
+        Width = 100
+        Caption = 'Airspeed (mph)'
+        FocusControl = AirspeedMphSpinEdit
+      end
+      object AirspeedMphSpinEdit: TSpinEdit
+        Left = 16
+        Height = 23
+        Top = 284
+        Width = 120
+        Increment = 1
+        MaxValue = 1036
+        MinValue = 0
+        TabOrder = 1
+        OnChange = AirspeedSpinEditChange
+      end
+      object AirspeedKmhLabel: TLabel
+        Left = 296
+        Height = 15
+        Top = 221
+        Width = 100
+        Caption = 'Airspeed (km/h)'
+        FocusControl = AirspeedKmhSpinEdit
+      end
+      object AirspeedKmhSpinEdit: TSpinEdit
+        Left = 296
+        Height = 23
+        Top = 236
+        Width = 120
+        Increment = 1
+        MaxValue = 1667
+        MinValue = 0
+        TabOrder = 2
+        OnChange = AirspeedSpinEditChange
+      end
+    end
   end
 end

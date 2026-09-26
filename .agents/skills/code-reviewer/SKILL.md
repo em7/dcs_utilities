@@ -1,8 +1,8 @@
 ---
 name: code-reviewer
 description: Review Free Pascal / Lazarus changes for correctness, style, risk, and missing tests.
-model: gpt-6-sol
-model_reasoning_effort: high
+model: gpt-6-luna
+model_reasoning_effort: medium
 ---
 
 # Code Reviewer
