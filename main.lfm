@@ -211,9 +211,9 @@ object MainForm: TMainForm
       object AirfieldElevationLabel: TLabel
         AnchorSideTop.Control = QfeAltimeterGauge
         AnchorSideTop.Side = asrBottom
-        AnchorSideRight.Control = QfeAltimeterGauge
+        AnchorSideRight.Control = QnhAltimeterGauge
         AnchorSideRight.Side = asrBottom
-        Left = 567
+        Left = 208
         Height = 15
         Top = 221
         Width = 144
@@ -226,9 +226,9 @@ object MainForm: TMainForm
       object AirfieldElevationSpinEdit: TSpinEdit
         AnchorSideTop.Control = AirfieldElevationLabel
         AnchorSideTop.Side = asrBottom
-        AnchorSideRight.Control = QfeAltimeterGauge
+        AnchorSideRight.Control = QnhAltimeterGauge
         AnchorSideRight.Side = asrBottom
-        Left = 591
+        Left = 232
         Height = 23
         Top = 236
         Width = 120
@@ -242,9 +242,9 @@ object MainForm: TMainForm
       object AirfieldElevationMLabel: TLabel
         AnchorSideTop.Control = AirfieldElevationSpinEdit
         AnchorSideTop.Side = asrBottom
-        AnchorSideRight.Control = QfeAltimeterGauge
+        AnchorSideRight.Control = QnhAltimeterGauge
         AnchorSideRight.Side = asrBottom
-        Left = 564
+        Left = 205
         Height = 15
         Top = 264
         Width = 147
@@ -257,9 +257,9 @@ object MainForm: TMainForm
       object AirfieldElevationMSpinEdit: TSpinEdit
         AnchorSideTop.Control = AirfieldElevationMLabel
         AnchorSideTop.Side = asrBottom
-        AnchorSideRight.Control = QfeAltimeterGauge
+        AnchorSideRight.Control = QnhAltimeterGauge
         AnchorSideRight.Side = asrBottom
-        Left = 591
+        Left = 232
         Height = 23
         Top = 279
         Width = 120

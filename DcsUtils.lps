@@ -3,6 +3,7 @@
   <ProjectSession>
     <PathDelim Value="\"/>
     <Version Value="12"/>
+    <ManyBuildModesSelection Value="Default,Debug,Release"/>
     <BuildModes Active="Debug"/>
     <Units>
       <Unit>
