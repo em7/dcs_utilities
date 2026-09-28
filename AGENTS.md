@@ -11,7 +11,7 @@ Codex can delegate independent work to subagents when the user explicitly asks f
 - UI Developer: `.agents/skills/ui-developer/SKILL.md`
 - Code Reviewer: `.agents/skills/code-reviewer/SKILL.md`
 
-Subagents should inherit the current model and reasoning settings unless the user explicitly requests a different model.
+Subagents MUST use the model requested in their SKILL files. If the model can't run a command, run it for it and return the output assuming the output is non-destructive (check that).
 
 ## Orchestration Rules
 

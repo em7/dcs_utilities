@@ -125,6 +125,7 @@ begin
   ACanvas.Pen.Width := 1;
 end;
 
+
 procedure TAltimeterGauge.DrawDialTicks(ACanvas: TCanvas; const ARect: TRect);
 var
   DialSize, CenterX, CenterY, D: Integer;

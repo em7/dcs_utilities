@@ -1,34 +1,279 @@
 object MainForm: TMainForm
   Left = 50
-  Height = 457
+  Height = 402
   Top = 50
   Width = 732
   Caption = 'DCS Utilities'
-  ClientHeight = 457
+  ClientHeight = 402
   ClientWidth = 732
   LCLVersion = '4.6.0.0'
   object MainPageCtrl: TPageControl
     AnchorSideLeft.Control = Owner
     AnchorSideTop.Control = Owner
-    AnchorSideRight.Control = Owner
+    AnchorSideRight.Control = QfeAltimeterGauge
     AnchorSideRight.Side = asrBottom
     AnchorSideBottom.Control = Owner
     AnchorSideBottom.Side = asrBottom
     Left = 0
-    Height = 457
+    Height = 402
     Top = 0
     Width = 732
-    ActivePage = Altimeter
-    Anchors = [akTop, akLeft, akRight, akBottom]
-    TabIndex = 1
+    ActivePage = QnhQfe
+    Anchors = [akTop, akRight, akBottom]
+    TabIndex = 0
     TabOrder = 0
     OnChange = MainPageCtrlChange
     object QnhQfe: TTabSheet
       Caption = 'QNH, QFE'
+      ClientHeight = 374
+      ClientWidth = 724
+      OnContextPopup = QnhQfeContextPopup
+      object QnhAltimeterGauge: TAltimeterGauge
+        Left = 8
+        Height = 200
+        Top = 16
+        Width = 344
+        PressureInHg = 29.92
+      end
+      object QfeAltimeterGauge: TAltimeterGauge
+        AnchorSideLeft.Control = QnhAltimeterGauge
+        AnchorSideLeft.Side = asrBottom
+        Left = 367
+        Height = 200
+        Top = 16
+        Width = 344
+        PressureInHg = 29.92
+      end
+      object QnhPressureLabel: TLabel
+        AnchorSideLeft.Control = QnhAltimeterGauge
+        AnchorSideTop.Control = QnhPressureInHgSpinEdit
+        AnchorSideTop.Side = asrBottom
+        Left = 8
+        Height = 15
+        Top = 264
+        Width = 58
+        BorderSpacing.Top = 5
+        Caption = 'QNH (hPa)'
+        FocusControl = QnhPressureSpinEdit
+      end
+      object QnhPressureSpinEdit: TSpinEdit
+        AnchorSideLeft.Control = QnhAltimeterGauge
+        AnchorSideTop.Control = QnhPressureLabel
+        AnchorSideTop.Side = asrBottom
+        Left = 8
+        Height = 23
+        Top = 279
+        Width = 120
+        MaxValue = 1200
+        MinValue = 500
+        TabOrder = 1
+        Value = 1013
+        OnChange = QnhPressureSpinEditChange
+      end
+      object QnhPressureInHgLabel: TLabel
+        AnchorSideLeft.Control = QnhAltimeterGauge
+        AnchorSideTop.Control = QnhAltimeterGauge
+        AnchorSideTop.Side = asrBottom
+        Left = 8
+        Height = 15
+        Top = 221
+        Width = 64
+        BorderSpacing.Top = 5
+        Caption = 'QNH (inHg)'
+        FocusControl = QnhPressureInHgSpinEdit
+      end
+      object QnhPressureInHgSpinEdit: TFloatSpinEdit
+        AnchorSideLeft.Control = QnhAltimeterGauge
+        AnchorSideTop.Control = QnhPressureInHgLabel
+        AnchorSideTop.Side = asrBottom
+        Left = 8
+        Height = 23
+        Top = 236
+        Width = 120
+        Increment = 0.01
+        MaxValue = 35.43
+        MinValue = 14.76
+        TabOrder = 0
+        Value = 29.92
+        OnChange = QnhPressureInHgSpinEditChange
+      end
+      object QnhPressureMmHgLabel: TLabel
+        AnchorSideLeft.Control = QnhAltimeterGauge
+        AnchorSideTop.Control = QnhPressureSpinEdit
+        AnchorSideTop.Side = asrBottom
+        Left = 8
+        Height = 15
+        Top = 307
+        Width = 76
+        BorderSpacing.Top = 5
+        Caption = 'QNH (mmHg)'
+        FocusControl = QnhPressureMmHgSpinEdit
+      end
+      object QnhPressureMmHgSpinEdit: TSpinEdit
+        AnchorSideLeft.Control = QnhAltimeterGauge
+        AnchorSideTop.Control = QnhPressureMmHgLabel
+        AnchorSideTop.Side = asrBottom
+        Left = 8
+        Height = 23
+        Top = 322
+        Width = 120
+        MaxValue = 900
+        MinValue = 375
+        TabOrder = 2
+        Value = 760
+        OnChange = QnhPressureMmHgSpinEditChange
+      end
+      object QfePressureLabel: TLabel
+        AnchorSideLeft.Control = QfeAltimeterGauge
+        AnchorSideTop.Control = QnhPressureInHgSpinEdit
+        AnchorSideTop.Side = asrBottom
+        Left = 372
+        Height = 15
+        Top = 264
+        Width = 52
+        BorderSpacing.Left = 5
+        BorderSpacing.Top = 5
+        Caption = 'QFE (hPa)'
+        FocusControl = QfePressureSpinEdit
+      end
+      object QfePressureSpinEdit: TSpinEdit
+        AnchorSideLeft.Control = QfeAltimeterGauge
+        AnchorSideTop.Control = QfePressureLabel
+        AnchorSideTop.Side = asrBottom
+        Left = 372
+        Height = 23
+        Top = 279
+        Width = 120
+        BorderSpacing.Left = 5
+        MaxValue = 1200
+        MinValue = 500
+        TabOrder = 4
+        Value = 1013
+        OnChange = QfePressureSpinEditChange
+      end
+      object QfePressureInHgLabel: TLabel
+        AnchorSideLeft.Control = QfeAltimeterGauge
+        AnchorSideTop.Control = QfeAltimeterGauge
+        AnchorSideTop.Side = asrBottom
+        Left = 372
+        Height = 15
+        Top = 221
+        Width = 58
+        BorderSpacing.Left = 5
+        BorderSpacing.Top = 5
+        Caption = 'QFE (inHg)'
+        FocusControl = QfePressureInHgSpinEdit
+      end
+      object QfePressureInHgSpinEdit: TFloatSpinEdit
+        AnchorSideLeft.Control = QfeAltimeterGauge
+        AnchorSideTop.Control = QfePressureInHgLabel
+        AnchorSideTop.Side = asrBottom
+        Left = 372
+        Height = 23
+        Top = 236
+        Width = 120
+        BorderSpacing.Left = 5
+        Increment = 0.01
+        MaxValue = 35.43
+        MinValue = 14.76
+        TabOrder = 3
+        Value = 29.92
+        OnChange = QfePressureInHgSpinEditChange
+      end
+      object QfePressureMmHgLabel: TLabel
+        AnchorSideLeft.Control = QfeAltimeterGauge
+        AnchorSideTop.Control = QnhPressureSpinEdit
+        AnchorSideTop.Side = asrBottom
+        Left = 372
+        Height = 15
+        Top = 307
+        Width = 70
+        BorderSpacing.Left = 5
+        BorderSpacing.Top = 5
+        Caption = 'QFE (mmHg)'
+        FocusControl = QfePressureMmHgSpinEdit
+      end
+      object QfePressureMmHgSpinEdit: TSpinEdit
+        AnchorSideLeft.Control = QfeAltimeterGauge
+        AnchorSideTop.Control = QfePressureMmHgLabel
+        AnchorSideTop.Side = asrBottom
+        Left = 372
+        Height = 23
+        Top = 322
+        Width = 120
+        BorderSpacing.Left = 5
+        MaxValue = 900
+        MinValue = 375
+        TabOrder = 5
+        Value = 760
+        OnChange = QfePressureMmHgSpinEditChange
+      end
+      object AirfieldElevationLabel: TLabel
+        AnchorSideTop.Control = QfeAltimeterGauge
+        AnchorSideTop.Side = asrBottom
+        AnchorSideRight.Control = QfeAltimeterGauge
+        AnchorSideRight.Side = asrBottom
+        Left = 567
+        Height = 15
+        Top = 221
+        Width = 144
+        Anchors = [akTop, akRight]
+        BorderSpacing.Left = 5
+        BorderSpacing.Top = 5
+        Caption = 'Airfield/target elevation (ft)'
+        FocusControl = AirfieldElevationSpinEdit
+      end
+      object AirfieldElevationSpinEdit: TSpinEdit
+        AnchorSideTop.Control = AirfieldElevationLabel
+        AnchorSideTop.Side = asrBottom
+        AnchorSideRight.Control = QfeAltimeterGauge
+        AnchorSideRight.Side = asrBottom
+        Left = 591
+        Height = 23
+        Top = 236
+        Width = 120
+        Anchors = [akTop, akRight]
+        BorderSpacing.Left = 5
+        MaxValue = 30000
+        MinValue = -1000
+        TabOrder = 6
+        OnChange = AirfieldElevationSpinEditChange
+      end
+      object AirfieldElevationMLabel: TLabel
+        AnchorSideTop.Control = AirfieldElevationSpinEdit
+        AnchorSideTop.Side = asrBottom
+        AnchorSideRight.Control = QfeAltimeterGauge
+        AnchorSideRight.Side = asrBottom
+        Left = 564
+        Height = 15
+        Top = 264
+        Width = 147
+        Anchors = [akTop, akRight]
+        BorderSpacing.Left = 5
+        BorderSpacing.Top = 5
+        Caption = 'Airfield/target elevation (m)'
+        FocusControl = AirfieldElevationMSpinEdit
+      end
+      object AirfieldElevationMSpinEdit: TSpinEdit
+        AnchorSideTop.Control = AirfieldElevationMLabel
+        AnchorSideTop.Side = asrBottom
+        AnchorSideRight.Control = QfeAltimeterGauge
+        AnchorSideRight.Side = asrBottom
+        Left = 591
+        Height = 23
+        Top = 279
+        Width = 120
+        Anchors = [akTop, akRight]
+        BorderSpacing.Left = 5
+        MaxValue = 9144
+        MinValue = -305
+        TabOrder = 7
+        OnChange = AirfieldElevationMSpinEditChange
+      end
     end
     object Altimeter: TTabSheet
       Caption = 'Altimeter'
-      ClientHeight = 429
+      ClientHeight = 374
       ClientWidth = 724
       object AltimeterGaugeCtrl: TAltimeterGauge
         Left = 16
@@ -165,7 +410,7 @@ object MainForm: TMainForm
     end
     object Airspeed: TTabSheet
       Caption = 'Airspeed'
-      ClientHeight = 429
+      ClientHeight = 374
       ClientWidth = 724
       object AirspeedGaugeCtrl: TAirspeedGauge
         Left = 16
@@ -177,7 +422,7 @@ object MainForm: TMainForm
         Left = 16
         Height = 15
         Top = 221
-        Width = 100
+        Width = 86
         Caption = 'Airspeed (knots)'
         FocusControl = AirspeedKnotsSpinEdit
       end
@@ -186,9 +431,7 @@ object MainForm: TMainForm
         Height = 23
         Top = 236
         Width = 120
-        Increment = 1
         MaxValue = 900
-        MinValue = 0
         TabOrder = 0
         OnChange = AirspeedSpinEditChange
       end
@@ -196,7 +439,7 @@ object MainForm: TMainForm
         Left = 16
         Height = 15
         Top = 269
-        Width = 100
+        Width = 82
         Caption = 'Airspeed (mph)'
         FocusControl = AirspeedMphSpinEdit
       end
@@ -205,9 +448,7 @@ object MainForm: TMainForm
         Height = 23
         Top = 284
         Width = 120
-        Increment = 1
         MaxValue = 1036
-        MinValue = 0
         TabOrder = 1
         OnChange = AirspeedSpinEditChange
       end
@@ -215,7 +456,7 @@ object MainForm: TMainForm
         Left = 296
         Height = 15
         Top = 221
-        Width = 100
+        Width = 86
         Caption = 'Airspeed (km/h)'
         FocusControl = AirspeedKmhSpinEdit
       end
@@ -224,9 +465,7 @@ object MainForm: TMainForm
         Height = 23
         Top = 236
         Width = 120
-        Increment = 1
         MaxValue = 1667
-        MinValue = 0
         TabOrder = 2
         OnChange = AirspeedSpinEditChange
       end

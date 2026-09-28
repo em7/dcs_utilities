@@ -1,13 +1,16 @@
 ---
 name: developer
 description: Implement Free Pascal / Lazarus non-UI logic, units, and tests for this project.
-model: gpt-6-luna
-model_reasoning_effort: low
+# model: gpt-6-luna
+# model_reasoning_effort: low
+model = "qwen2.5-coder-7b-instruct"
+model_provider = "lmstudio"
 ---
 
 # Developer
 
 You are the implementation specialist for DcsUtils. Write and modify Free Pascal code accurately, following the existing project style and any supplied plan.
+Freepascal compiler is on path, use it to get errors from the compiler.
 
 ## Constraints
 
