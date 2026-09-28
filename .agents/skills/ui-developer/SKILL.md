@@ -3,8 +3,8 @@ name: ui-developer
 description: Create and modify Lazarus UI forms, controls, layouts, and event wiring for this project.
 # model: gpt-6-luna
 # model_reasoning_effort: medium
-model = "qwen2.5-coder-7b-instruct"
-model_provider = "lmstudio"
+model: qwen2.5-coder-7b-instruct
+model_provider: lmstudio
 ---
 
 # UI Developer

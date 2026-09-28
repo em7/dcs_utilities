@@ -23,14 +23,45 @@
         <Loaded Value="True"/>
       </Unit>
       <Unit>
+        <Filename Value="..\ui_components\qnhqfecalc.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="QnhQfeCalc"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit>
+      <Unit>
+        <Filename Value="test_airspeedcalc.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UsageCount Value="20"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\ui_components\airspeedcalc.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="AirspeedCalc"/>
+        <UsageCount Value="20"/>
+      </Unit>
+      <Unit>
+        <Filename Value="test_groundattackcalc.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UsageCount Value="20"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\ui_components\groundattackcalc.pas"/>
+        <UnitName Value="GroundAttackCalc"/>
+        <UsageCount Value="20"/>
+      </Unit>
+      <Unit>
         <Filename Value="..\qnhqfecalc.pas"/>
         <UnitName Value="QnhQfeCalc"/>
         <UsageCount Value="20"/>
       </Unit>
       <Unit>
-        <Filename Value="..\ui_components\qnhqfecalc.pas"/>
+        <Filename Value="..\groundattackcalc.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="QnhQfeCalc"/>
+        <UnitName Value="GroundAttackCalc"/>
         <EditorIndex Value="-1"/>
         <WindowIndex Value="-1"/>
         <TopLine Value="-1"/>

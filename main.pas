@@ -6,7 +6,8 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ComCtrls, Spin,
-  StdCtrls, AltimeterGauge, QnhQfeCalc, AirspeedGauge, AirspeedCalc, Types;
+  StdCtrls, ExtCtrls, Math, AltimeterGauge, QnhQfeCalc, AirspeedGauge,
+  AirspeedCalc, GroundAttackCalc, Types;
 
 type
 
@@ -53,6 +54,25 @@ type
     QfePressureMmHgSpinEdit: TSpinEdit;
     AirfieldElevationMLabel: TLabel;
     AirfieldElevationMSpinEdit: TSpinEdit;
+    AttackDirectionLabel: TLabel;
+    AttackDirectionSpinEdit: TSpinEdit;
+    AttackProfileComboBox: TComboBox;
+    AttackProfileLabel: TLabel;
+    DiveInitiationResultLabel: TLabel;
+    DiveInitiationSpeedResultLabel: TLabel;
+    GroundAttack: TTabSheet;
+    GroundAttackAircraftLabel: TLabel;
+    GroundAttackInputsGroupBox: TGroupBox;
+    GroundAttackPatternPaintBox: TPaintBox;
+    GroundAttackSummaryGroupBox: TGroupBox;
+    PatternAltitudeResultLabel: TLabel;
+    PatternComboBox: TComboBox;
+    PatternLabel: TLabel;
+    ReleaseResultLabel: TLabel;
+    ReleaseSpeedResultLabel: TLabel;
+    ReticleResultLabel: TLabel;
+    TargetMslAltitudeLabel: TLabel;
+    TargetMslAltitudeSpinEdit: TSpinEdit;
 
     procedure AirfieldElevationSpinEditChange(Sender: TObject);
     procedure AltitudeMSpinEditChange(Sender: TObject);
@@ -69,13 +89,24 @@ type
     procedure QfePressureInHgSpinEditChange(Sender: TObject);
     procedure QfePressureMmHgSpinEditChange(Sender: TObject);
     procedure AirfieldElevationMSpinEditChange(Sender: TObject);
+    procedure GroundAttackInputsChange(Sender: TObject);
+    procedure GroundAttackPatternPaintBoxPaint(Sender: TObject);
     procedure QnhQfeContextPopup(Sender: TObject; MousePos: TPoint;
-      var Handled: Boolean);
+      var Handled: boolean);
 
   private
     // Stops updating UI to distinguish between update made by user
     // and auto-updates from the code.
     StopUiUpdate: boolean;
+    GroundAttackProfile: TDiveBombingProfile;
+    GroundAttackHeadings: THeadingArray;
+    GroundAttackPatternAltitude: Integer;
+    procedure DrawArrow(ACanvas: TCanvas; const AFrom, ATo: TPoint);
+    //Updates the altimeter pressure controls in hPa, inHg, and mmHg and applies
+    // the pressure to the altimeter gauge.
+    procedure UpdatePressureControls(APressureHpa: double);
+    // Updates the QNH and QFE controls in hPa, inHg, and mmHg and configures their
+    //altimeter gauges for airfield elevation and zero elevation respectively.
     procedure UpdateQnhQfeControls(AQnhHpa, AQfeHpa: double);
   public
     constructor Create(AOwner: TComponent); override;
@@ -87,6 +118,170 @@ var
 implementation
 
 {$R *.lfm}
+
+{ TMainForm }
+
+constructor TMainForm.Create(AOwner: TComponent);
+begin
+  inherited Create(AOwner);
+  StopUiUpdate := False;
+  QnhPressureSpinEditChange(QnhPressureSpinEdit);
+  AttackProfileComboBox.ItemIndex := 0;
+  PatternComboBox.ItemIndex := 0;
+  GroundAttackInputsChange(nil);
+end;
+
+procedure TMainForm.GroundAttackInputsChange(Sender: TObject);
+var
+  ProfileId: TDiveBombingProfileId;
+  TurnDirection: TSquareTurnDirection;
+  ReleaseMsl: Integer;
+begin
+  if (csLoading in ComponentState) or (AttackProfileComboBox.ItemIndex < 0) or
+    (PatternComboBox.ItemIndex < 0) then
+    Exit;
+
+  if AttackProfileComboBox.ItemIndex = 0 then
+    ProfileId := dbp20Degree
+  else
+    ProfileId := dbp30Degree;
+  if PatternComboBox.ItemIndex = 0 then
+    TurnDirection := stdLeft
+  else
+    TurnDirection := stdRight;
+
+  GroundAttackProfile := GetDiveBombingProfile(ProfileId);
+  GroundAttackPatternAltitude := CalculateMslAltitude(
+    TargetMslAltitudeSpinEdit.Value,
+    GroundAttackProfile.DiveInitiationAglFeet);
+  ReleaseMsl := CalculateMslAltitude(TargetMslAltitudeSpinEdit.Value,
+    GroundAttackProfile.ReleaseAglFeet);
+  GroundAttackHeadings := CalculateSquareHeadings(AttackDirectionSpinEdit.Value,
+    TurnDirection);
+
+  DiveInitiationResultLabel.Caption := Format(
+    'Dive initiation: %d ft MSL (%d ft AGL)',
+    [GroundAttackPatternAltitude, GroundAttackProfile.DiveInitiationAglFeet]);
+  DiveInitiationSpeedResultLabel.Caption := Format(
+    'Dive initiation speed: %d knots',
+    [GroundAttackProfile.DiveInitiationSpeedKnots]);
+  ReleaseResultLabel.Caption := Format('Release: %d ft MSL (%d ft AGL)',
+    [ReleaseMsl, GroundAttackProfile.ReleaseAglFeet]);
+  ReleaseSpeedResultLabel.Caption := Format('Release speed: %d to %d knots',
+    [GroundAttackProfile.ReleaseSpeedMinKnots,
+    GroundAttackProfile.ReleaseSpeedMaxKnots]);
+  ReticleResultLabel.Caption := Format('Reticle depression: %d mils',
+    [GroundAttackProfile.ReticleDepressionMils]);
+  PatternAltitudeResultLabel.Caption := Format('Pattern altitude: %d ft MSL',
+    [GroundAttackPatternAltitude]);
+  GroundAttackPatternPaintBox.Invalidate;
+end;
+
+procedure TMainForm.DrawArrow(ACanvas: TCanvas; const AFrom, ATo: TPoint);
+const
+  ArrowLength = 10;
+  ArrowAngle = Pi / 7;
+var
+  DirectionAngle: Double;
+  ArrowHead: array[0..2] of TPoint;
+begin
+  ACanvas.Line(AFrom, ATo);
+  DirectionAngle := ArcTan2(ATo.Y - AFrom.Y, ATo.X - AFrom.X);
+  ArrowHead[0] := ATo;
+  ArrowHead[1] := Point(
+    ATo.X - Round(ArrowLength * Cos(DirectionAngle - ArrowAngle)),
+    ATo.Y - Round(ArrowLength * Sin(DirectionAngle - ArrowAngle)));
+  ArrowHead[2] := Point(
+    ATo.X - Round(ArrowLength * Cos(DirectionAngle + ArrowAngle)),
+    ATo.Y - Round(ArrowLength * Sin(DirectionAngle + ArrowAngle)));
+  ACanvas.Polygon(ArrowHead);
+end;
+
+procedure TMainForm.GroundAttackPatternPaintBoxPaint(Sender: TObject);
+var
+  PaintCanvas: TCanvas;
+  Center: TPoint;
+  LocalPoints: array[0..4] of TPoint;
+  Points: array[0..4] of TPoint;
+  Index: Integer;
+  HalfSize: Integer;
+  Rotation: Double;
+  LocalX, LocalY: Integer;
+  MidPoint: TPoint;
+  HeadingText: string;
+  TargetPoint: TPoint;
+begin
+  PaintCanvas := GroundAttackPatternPaintBox.Canvas;
+  PaintCanvas.Brush.Style := bsSolid;
+  PaintCanvas.Brush.Color := clWindow;
+  PaintCanvas.FillRect(GroundAttackPatternPaintBox.ClientRect);
+  PaintCanvas.Font.Color := clWindowText;
+  PaintCanvas.TextOut(8, 6, Format('Square pattern at %d ft MSL',
+    [GroundAttackPatternAltitude]));
+  if PatternComboBox.ItemIndex = 0 then
+    PaintCanvas.TextOut(8, 24, '90 degree left turns')
+  else
+    PaintCanvas.TextOut(8, 24, '90 degree right turns');
+
+  HalfSize := Min(GroundAttackPatternPaintBox.Width,
+    GroundAttackPatternPaintBox.Height - 45) div 3;
+  if HalfSize < 30 then
+    Exit;
+  Center := Point(GroundAttackPatternPaintBox.Width div 2,
+    45 + (GroundAttackPatternPaintBox.Height - 45) div 2);
+  if PatternComboBox.ItemIndex = 0 then
+  begin
+    LocalPoints[0] := Point(HalfSize, HalfSize);
+    LocalPoints[1] := Point(HalfSize, -HalfSize);
+    LocalPoints[2] := Point(-HalfSize, -HalfSize);
+    LocalPoints[3] := Point(-HalfSize, HalfSize);
+  end
+  else
+  begin
+    LocalPoints[0] := Point(-HalfSize, HalfSize);
+    LocalPoints[1] := Point(-HalfSize, -HalfSize);
+    LocalPoints[2] := Point(HalfSize, -HalfSize);
+    LocalPoints[3] := Point(HalfSize, HalfSize);
+  end;
+  LocalPoints[4] := LocalPoints[0];
+  Rotation := DegToRad(GroundAttackHeadings[0]);
+  for Index := Low(Points) to High(Points) do
+  begin
+    LocalX := LocalPoints[Index].X;
+    LocalY := LocalPoints[Index].Y;
+    Points[Index] := Point(
+      Center.X + Round(LocalX * Cos(Rotation) - LocalY * Sin(Rotation)),
+      Center.Y + Round(LocalX * Sin(Rotation) + LocalY * Cos(Rotation)));
+  end;
+
+  PaintCanvas.Pen.Width := 2;
+  PaintCanvas.Pen.Color := clHighlight;
+  PaintCanvas.Brush.Color := clHighlight;
+  for Index := 0 to 3 do
+    DrawArrow(PaintCanvas, Points[Index], Points[Index + 1]);
+
+  PaintCanvas.Brush.Style := bsClear;
+  for Index := 0 to 3 do
+  begin
+    MidPoint := Point((Points[Index].X + Points[Index + 1].X) div 2,
+      (Points[Index].Y + Points[Index + 1].Y) div 2);
+    HeadingText := Format('Leg %d: %.3d°', [Index + 1,
+      GroundAttackHeadings[Index]]);
+    PaintCanvas.TextOut(MidPoint.X - PaintCanvas.TextWidth(HeadingText) div 2,
+      MidPoint.Y - PaintCanvas.TextHeight(HeadingText) - 3, HeadingText);
+  end;
+
+  TargetPoint := Points[1];
+  PaintCanvas.Pen.Color := clRed;
+  PaintCanvas.Pen.Width := 2;
+  PaintCanvas.Line(TargetPoint.X - 7, TargetPoint.Y - 7,
+    TargetPoint.X + 7, TargetPoint.Y + 7);
+  PaintCanvas.Line(TargetPoint.X - 7, TargetPoint.Y + 7,
+    TargetPoint.X + 7, TargetPoint.Y - 7);
+  PaintCanvas.Font.Color := clRed;
+  PaintCanvas.TextOut(TargetPoint.X + 9, TargetPoint.Y - 7,
+    'Target / attack pass');
+end;
 
 procedure TMainForm.AirfieldElevationSpinEditChange(Sender: TObject);
 begin
@@ -228,19 +423,20 @@ begin
   QfeAltimeterGauge.PressureInHg := HpaToInHg(AQfeHpa);
 end;
 
-procedure TMainForm.QnhQfeContextPopup(Sender: TObject; MousePos: TPoint;
-  var Handled: Boolean);
+procedure TMainForm.UpdatePressureControls(APressureHpa: double);
 begin
-
+  PressureHpaSpinEdit.Value := Round(APressureHpa);
+  PressureInSpinEdit.Value := HpaToInHg(APressureHpa);
+  PressureMmSpinEdit.Value := Round(HpaToMmHg(APressureHpa));
+  AltimeterGaugeCtrl.PressureInHg := HpaToInHg(APressureHpa);
 end;
 
-{ TMainForm }
-
-constructor TMainForm.Create(AOwner: TComponent);
+{ Reserved context-popup event handler for the QNH/QFE page; currently performs
+  no action and leaves Handled unchanged. }
+procedure TMainForm.QnhQfeContextPopup(Sender: TObject; MousePos: TPoint;
+  var Handled: boolean);
 begin
-  inherited Create(AOwner);
-  StopUiUpdate := False;
-  QnhPressureSpinEditChange(QnhPressureSpinEdit);
+
 end;
 
 procedure TMainForm.AirspeedSpinEditChange(Sender: TObject);
@@ -296,38 +492,47 @@ end;
 
 procedure TMainForm.PressureHpaSpinEditChange(Sender: TObject);
 begin
-  if StopUiUpdate then
+  if StopUiUpdate or (csLoading in ComponentState) then
     Exit;
 
   StopUiUpdate := True;
-  PressureMmSpinEdit.Value := QnhQfeCalc.HpaToMmHg(PressureHpaSpinEdit.Value);
-  PressureInSpinEdit.Value := QnhQfeCalc.HpaToInHg(PressureHpaSpinEdit.Value);
-  AltimeterGaugeCtrl.PressureInHg := PressureInSpinEdit.Value;
-  StopUIUpdate := False;
+  try
+    UpdatePressureControls(PressureHpaSpinEdit.Value);
+  finally
+    StopUiUpdate := False;
+  end;
 end;
 
 procedure TMainForm.PressureInSpinEditChange(Sender: TObject);
+var
+  PressureHpa: double;
 begin
-  if StopUiUpdate then
+  if StopUiUpdate or (csLoading in ComponentState) then
     Exit;
 
+  PressureHpa := InHgToHpa(PressureInSpinEdit.Value);
   StopUiUpdate := True;
-  PressureHpaSpinEdit.Value := QnhQfeCalc.InHgToHpa(PressureInSpinEdit.Value);
-  PressureMmSpinEdit.Value := QnhQfeCalc.HpaToMmHg(PressureHpaSpinEdit.Value);
-  AltimeterGaugeCtrl.PressureInHg := PressureInSpinEdit.Value;
-  StopUIUpdate := False;
+  try
+    UpdatePressureControls(PressureHpa);
+  finally
+    StopUiUpdate := False;
+  end;
 end;
 
 procedure TMainForm.PressureMmSpinEditChange(Sender: TObject);
+var
+  PressureHpa: double;
 begin
-  if StopUiUpdate then
+  if StopUiUpdate or (csLoading in ComponentState) then
     Exit;
 
+  PressureHpa := MmHgToHpa(PressureMmSpinEdit.Value);
   StopUiUpdate := True;
-  PressureHpaSpinEdit.Value := QnhQfeCalc.MmHgToHpa(PressureMmSpinEdit.Value);
-  PressureInSpinEdit.Value := QnhQfeCalc.HpaToInHg(PressureHpaSpinEdit.Value);
-  AltimeterGaugeCtrl.PressureInHg := PressureInSpinEdit.Value;
-  StopUIUpdate := False;
+  try
+    UpdatePressureControls(PressureHpa);
+  finally
+    StopUiUpdate := False;
+  end;
 end;
 
 initialization

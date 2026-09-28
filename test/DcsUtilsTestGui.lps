@@ -42,7 +42,7 @@
         <UnitName Value="AirspeedCalc"/>
         <IsVisibleTab Value="True"/>
         <EditorIndex Value="2"/>
-        <TopLine Value="32"/>
+        <TopLine Value="2"/>
         <UsageCount Value="20"/>
         <Loaded Value="True"/>
       </Unit>
@@ -59,6 +59,34 @@
         <UnitName Value="TestCase1"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="80" Y="8"/>
+        <UsageCount Value="20"/>
+      </Unit>
+      <Unit>
+        <Filename Value="test_groundattackcalc.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\ui_components\groundattackcalc.pas"/>
+        <UnitName Value="GroundAttackCalc"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\groundattackcalc.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="GroundAttackCalc"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
         <UsageCount Value="20"/>
       </Unit>
     </Units>

@@ -4,7 +4,7 @@ program DcsUtilsTestGui;
 
 uses
   Interfaces, Forms, test_qnhqfecalc, QnhQfeCalc, test_airspeedcalc,
-  AirspeedCalc, GuiTestRunner;
+  test_groundattackcalc, AirspeedCalc, GroundAttackCalc, GuiTestRunner;
 
 {$R *.res}
 

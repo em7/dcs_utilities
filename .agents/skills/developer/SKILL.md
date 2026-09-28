@@ -3,8 +3,8 @@ name: developer
 description: Implement Free Pascal / Lazarus non-UI logic, units, and tests for this project.
 # model: gpt-6-luna
 # model_reasoning_effort: low
-model = "qwen2.5-coder-7b-instruct"
-model_provider = "lmstudio"
+model: qwen2.5-coder-7b-instruct
+model_provider: lmstudio
 ---
 
 # Developer

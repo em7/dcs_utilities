@@ -4,7 +4,7 @@ program DcsUtilsTest;
 
 uses
   Classes, consoletestrunner, test_qnhqfecalc, QnhQfeCalc,
-  test_airspeedcalc, AirspeedCalc;
+  test_airspeedcalc, AirspeedCalc, test_groundattackcalc, GroundAttackCalc;
 
 type
 

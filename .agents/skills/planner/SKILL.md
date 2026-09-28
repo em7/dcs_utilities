@@ -3,8 +3,8 @@ name: planner
 description: Produce concise implementation plans for this Lazarus / Free Pascal project before code is written.
 # model: gpt-6-luna
 # model_reasoning_effort: medium
-model = "qwen2.5-coder-7b-instruct"
-model_provider = "lmstudio"
+model: qwen2.5-coder-7b-instruct
+model_provider: lmstudio
 ---
 
 # Planner

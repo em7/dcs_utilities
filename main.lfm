@@ -38,7 +38,7 @@ object MainForm: TMainForm
       object QfeAltimeterGauge: TAltimeterGauge
         AnchorSideLeft.Control = QnhAltimeterGauge
         AnchorSideLeft.Side = asrBottom
-        Left = 367
+        Left = 357
         Height = 200
         Top = 16
         Width = 344
@@ -127,7 +127,7 @@ object MainForm: TMainForm
         AnchorSideLeft.Control = QfeAltimeterGauge
         AnchorSideTop.Control = QnhPressureInHgSpinEdit
         AnchorSideTop.Side = asrBottom
-        Left = 372
+        Left = 362
         Height = 15
         Top = 264
         Width = 52
@@ -140,7 +140,7 @@ object MainForm: TMainForm
         AnchorSideLeft.Control = QfeAltimeterGauge
         AnchorSideTop.Control = QfePressureLabel
         AnchorSideTop.Side = asrBottom
-        Left = 372
+        Left = 362
         Height = 23
         Top = 279
         Width = 120
@@ -155,7 +155,7 @@ object MainForm: TMainForm
         AnchorSideLeft.Control = QfeAltimeterGauge
         AnchorSideTop.Control = QfeAltimeterGauge
         AnchorSideTop.Side = asrBottom
-        Left = 372
+        Left = 362
         Height = 15
         Top = 221
         Width = 58
@@ -168,7 +168,7 @@ object MainForm: TMainForm
         AnchorSideLeft.Control = QfeAltimeterGauge
         AnchorSideTop.Control = QfePressureInHgLabel
         AnchorSideTop.Side = asrBottom
-        Left = 372
+        Left = 362
         Height = 23
         Top = 236
         Width = 120
@@ -184,7 +184,7 @@ object MainForm: TMainForm
         AnchorSideLeft.Control = QfeAltimeterGauge
         AnchorSideTop.Control = QnhPressureSpinEdit
         AnchorSideTop.Side = asrBottom
-        Left = 372
+        Left = 362
         Height = 15
         Top = 307
         Width = 70
@@ -197,7 +197,7 @@ object MainForm: TMainForm
         AnchorSideLeft.Control = QfeAltimeterGauge
         AnchorSideTop.Control = QfePressureMmHgLabel
         AnchorSideTop.Side = asrBottom
-        Left = 372
+        Left = 362
         Height = 23
         Top = 322
         Width = 120
@@ -468,6 +468,179 @@ object MainForm: TMainForm
         MaxValue = 1667
         TabOrder = 2
         OnChange = AirspeedSpinEditChange
+      end
+    end
+    object GroundAttack: TTabSheet
+      Caption = 'Ground attack patterns'
+      ClientHeight = 374
+      ClientWidth = 724
+      object GroundAttackInputsGroupBox: TGroupBox
+        Left = 8
+        Height = 174
+        Top = 8
+        Width = 280
+        Caption = 'F-5E attack setup'
+        ClientHeight = 154
+        ClientWidth = 276
+        TabOrder = 0
+        object GroundAttackAircraftLabel: TLabel
+          Left = 10
+          Height = 15
+          Top = 5
+          Width = 70
+          Caption = 'Aircraft: F-5E'
+        end
+        object AttackProfileLabel: TLabel
+          Left = 10
+          Height = 15
+          Top = 25
+          Width = 75
+          Caption = 'Attack profile'
+          FocusControl = AttackProfileComboBox
+        end
+        object AttackProfileComboBox: TComboBox
+          Left = 10
+          Height = 23
+          Top = 40
+          Width = 256
+          AutoComplete = True
+          ItemHeight = 15
+          Items.Strings = (
+            '20°, 1500ft'
+            '30°, 2000ft'
+          )
+          Style = csDropDownList
+          TabOrder = 0
+          OnChange = GroundAttackInputsChange
+        end
+        object TargetMslAltitudeLabel: TLabel
+          Left = 10
+          Height = 15
+          Top = 69
+          Width = 119
+          Caption = 'Target altitude MSL (ft)'
+          FocusControl = TargetMslAltitudeSpinEdit
+        end
+        object TargetMslAltitudeSpinEdit: TSpinEdit
+          Left = 186
+          Height = 23
+          Top = 65
+          Width = 80
+          MaxValue = 30000
+          MinValue = -1000
+          TabOrder = 1
+          OnChange = GroundAttackInputsChange
+        end
+        object AttackDirectionLabel: TLabel
+          Left = 10
+          Height = 15
+          Top = 96
+          Width = 111
+          Caption = 'Attack direction (deg)'
+          FocusControl = AttackDirectionSpinEdit
+        end
+        object AttackDirectionSpinEdit: TSpinEdit
+          Left = 186
+          Height = 23
+          Top = 90
+          Width = 80
+          MaxValue = 359
+          TabOrder = 2
+          OnChange = GroundAttackInputsChange
+        end
+        object PatternLabel: TLabel
+          Left = 10
+          Height = 15
+          Top = 124
+          Width = 42
+          Caption = 'Pattern'
+          FocusControl = PatternComboBox
+        end
+        object PatternComboBox: TComboBox
+          Left = 62
+          Height = 23
+          Top = 119
+          Width = 204
+          AutoComplete = True
+          ItemHeight = 15
+          Items.Strings = (
+            'Square, Left turns'
+            'Square, Right turns'
+          )
+          Style = csDropDownList
+          TabOrder = 3
+          OnChange = GroundAttackInputsChange
+        end
+      end
+      object GroundAttackSummaryGroupBox: TGroupBox
+        Left = 8
+        Height = 176
+        Top = 190
+        Width = 280
+        Caption = 'Calculated F-5E profile'
+        ClientHeight = 156
+        ClientWidth = 276
+        TabOrder = 1
+        object DiveInitiationResultLabel: TLabel
+          Left = 10
+          Height = 15
+          Top = 8
+          Width = 204
+          Caption = 'Dive initiation:'
+        end
+        object DiveInitiationSpeedResultLabel: TLabel
+          Left = 10
+          Height = 15
+          Top = 31
+          Width = 204
+          Caption = 'Dive initiation speed:'
+        end
+        object ReleaseResultLabel: TLabel
+          Left = 10
+          Height = 15
+          Top = 54
+          Width = 204
+          Caption = 'Release:'
+        end
+        object ReleaseSpeedResultLabel: TLabel
+          Left = 10
+          Height = 15
+          Top = 77
+          Width = 204
+          Caption = 'Release speed:'
+        end
+        object ReticleResultLabel: TLabel
+          Left = 10
+          Height = 15
+          Top = 100
+          Width = 204
+          Caption = 'Reticle depression:'
+        end
+        object PatternAltitudeResultLabel: TLabel
+          Left = 10
+          Height = 15
+          Top = 123
+          Width = 204
+          Caption = 'Pattern altitude:'
+        end
+      end
+      object GroundAttackPatternPaintBox: TPaintBox
+        AnchorSideLeft.Control = GroundAttackInputsGroupBox
+        AnchorSideLeft.Side = asrBottom
+        AnchorSideTop.Control = GroundAttack
+        AnchorSideRight.Control = GroundAttack
+        AnchorSideRight.Side = asrBottom
+        AnchorSideBottom.Control = GroundAttack
+        AnchorSideBottom.Side = asrBottom
+        Left = 296
+        Height = 358
+        Top = 8
+        Width = 420
+        Anchors = [akTop, akLeft, akRight, akBottom]
+        BorderSpacing.Left = 8
+        BorderSpacing.Right = 8
+        BorderSpacing.Bottom = 8
+        OnPaint = GroundAttackPatternPaintBoxPaint
       end
     end
   end

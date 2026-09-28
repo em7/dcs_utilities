@@ -116,6 +116,11 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="Main"/>
       </Unit>
+      <Unit>
+        <Filename Value="groundattackcalc.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="GroundAttackCalc"/>
+      </Unit>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

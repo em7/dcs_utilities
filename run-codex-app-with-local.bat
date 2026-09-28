@@ -1,0 +1,1 @@
+codex.exe app --oss --local-provider lmstudio --model qwen2.5-coder-7b-instruct

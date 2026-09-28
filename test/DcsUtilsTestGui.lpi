@@ -54,6 +54,15 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="AirspeedCalc"/>
       </Unit>
+      <Unit>
+        <Filename Value="test_groundattackcalc.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\groundattackcalc.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="GroundAttackCalc"/>
+      </Unit>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -64,7 +73,7 @@
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
-      <OtherUnitFiles Value="..\ui_components"/>
+      <OtherUnitFiles Value="..\ui_components;.."/>
       <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <Linking>
