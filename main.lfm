@@ -504,6 +504,7 @@ object MainForm: TMainForm
           Top = 40
           Width = 256
           AutoComplete = True
+          AutoCompleteText = [cbactEnabled, cbactEndOfLineComplete, cbactSearchAscending]
           ItemHeight = 15
           Items.Strings = (
             '20°, 1500ft'
@@ -562,6 +563,7 @@ object MainForm: TMainForm
           Top = 119
           Width = 204
           AutoComplete = True
+          AutoCompleteText = [cbactEnabled, cbactEndOfLineComplete, cbactSearchAscending]
           ItemHeight = 15
           Items.Strings = (
             'Square, Left turns'

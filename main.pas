@@ -98,9 +98,16 @@ type
     // Stops updating UI to distinguish between update made by user
     // and auto-updates from the code.
     StopUiUpdate: boolean;
+
+    // Ground attack profile for dive bombing calculations.
     GroundAttackProfile: TDiveBombingProfile;
+
+    // Array of headings for ground attack inputs.
     GroundAttackHeadings: THeadingArray;
+
+    // Altitude in meters for ground attack pattern calculation.
     GroundAttackPatternAltitude: Integer;
+    
     procedure DrawArrow(ACanvas: TCanvas; const AFrom, ATo: TPoint);
     //Updates the altimeter pressure controls in hPa, inHg, and mmHg and applies
     // the pressure to the altimeter gauge.
@@ -201,10 +208,20 @@ procedure TMainForm.GroundAttackPatternPaintBoxPaint(Sender: TObject);
 var
   PaintCanvas: TCanvas;
   Center: TPoint;
-  LocalPoints: array[0..4] of TPoint;
-  Points: array[0..4] of TPoint;
+  LocalPoints: array[0..3] of TPoint;
+  Points: array[0..3] of TPoint;
+  EntryPoints: array[0..3] of TPoint;
+  ExitPoints: array[0..3] of TPoint;
   Index: Integer;
+  NextIndex: Integer;
+  PreviousIndex: Integer;
   HalfSize: Integer;
+  CornerRadius: Integer;
+  CurveStep: Integer;
+  CurveSteps: Integer;
+  CurveT: Double;
+  CurvePoint: TPoint;
+  EdgeLength: Double;
   Rotation: Double;
   LocalX, LocalY: Integer;
   MidPoint: TPoint;
@@ -243,7 +260,6 @@ begin
     LocalPoints[2] := Point(HalfSize, -HalfSize);
     LocalPoints[3] := Point(HalfSize, HalfSize);
   end;
-  LocalPoints[4] := LocalPoints[0];
   Rotation := DegToRad(GroundAttackHeadings[0]);
   for Index := Low(Points) to High(Points) do
   begin
@@ -254,24 +270,76 @@ begin
       Center.Y + Round(LocalX * Sin(Rotation) + LocalY * Cos(Rotation)));
   end;
 
+  CornerRadius := Max(8, HalfSize div 5);
+  CurveSteps := 6;
+  for Index := 0 to 3 do
+  begin
+    PreviousIndex := (Index + 3) mod 4;
+    NextIndex := (Index + 1) mod 4;
+    EdgeLength := Sqrt(Sqr(Points[Index].X - Points[PreviousIndex].X) +
+      Sqr(Points[Index].Y - Points[PreviousIndex].Y));
+    EntryPoints[Index] := Point(
+      Points[Index].X + Round((Points[PreviousIndex].X - Points[Index].X) *
+        CornerRadius / EdgeLength),
+      Points[Index].Y + Round((Points[PreviousIndex].Y - Points[Index].Y) *
+        CornerRadius / EdgeLength));
+    EdgeLength := Sqrt(Sqr(Points[NextIndex].X - Points[Index].X) +
+      Sqr(Points[NextIndex].Y - Points[Index].Y));
+    ExitPoints[Index] := Point(
+      Points[Index].X + Round((Points[NextIndex].X - Points[Index].X) *
+        CornerRadius / EdgeLength),
+      Points[Index].Y + Round((Points[NextIndex].Y - Points[Index].Y) *
+        CornerRadius / EdgeLength));
+  end;
+
   PaintCanvas.Pen.Width := 2;
   PaintCanvas.Pen.Color := clHighlight;
   PaintCanvas.Brush.Color := clHighlight;
   for Index := 0 to 3 do
-    DrawArrow(PaintCanvas, Points[Index], Points[Index + 1]);
+  begin
+    NextIndex := (Index + 1) mod 4;
+    DrawArrow(PaintCanvas, ExitPoints[Index], EntryPoints[NextIndex]);
+  end;
+
+  for Index := 0 to 3 do
+  begin
+    PaintCanvas.MoveTo(EntryPoints[Index].X, EntryPoints[Index].Y);
+    for CurveStep := 1 to CurveSteps do
+    begin
+      CurveT := CurveStep / CurveSteps;
+      CurvePoint := Point(
+        Round(Sqr(1 - CurveT) * EntryPoints[Index].X +
+          2 * (1 - CurveT) * CurveT * Points[Index].X +
+          Sqr(CurveT) * ExitPoints[Index].X),
+        Round(Sqr(1 - CurveT) * EntryPoints[Index].Y +
+          2 * (1 - CurveT) * CurveT * Points[Index].Y +
+          Sqr(CurveT) * ExitPoints[Index].Y));
+      PaintCanvas.LineTo(CurvePoint.X, CurvePoint.Y);
+    end;
+  end;
 
   PaintCanvas.Brush.Style := bsClear;
   for Index := 0 to 3 do
   begin
-    MidPoint := Point((Points[Index].X + Points[Index + 1].X) div 2,
-      (Points[Index].Y + Points[Index + 1].Y) div 2);
-    HeadingText := Format('Leg %d: %.3d°', [Index + 1,
-      GroundAttackHeadings[Index]]);
+    NextIndex := (Index + 1) mod 4;
+    MidPoint := Point((ExitPoints[Index].X + EntryPoints[NextIndex].X) div 2,
+      (ExitPoints[Index].Y + EntryPoints[NextIndex].Y) div 2);
+    HeadingText := Format('Leg %d: %.3d° at %d ft MSL',
+      [Index + 1, GroundAttackHeadings[Index], GroundAttackPatternAltitude]);
     PaintCanvas.TextOut(MidPoint.X - PaintCanvas.TextWidth(HeadingText) div 2,
       MidPoint.Y - PaintCanvas.TextHeight(HeadingText) - 3, HeadingText);
   end;
 
-  TargetPoint := Points[1];
+  TargetPoint := EntryPoints[1];
+  EdgeLength := Sqrt(Sqr(EntryPoints[1].X - ExitPoints[0].X) +
+    Sqr(EntryPoints[1].Y - ExitPoints[0].Y));
+  if EdgeLength > 0 then
+  begin
+    TargetPoint.X := EntryPoints[1].X -
+      Round(12 * (EntryPoints[1].X - ExitPoints[0].X) / EdgeLength);
+    TargetPoint.Y := EntryPoints[1].Y -
+      Round(12 * (EntryPoints[1].Y - ExitPoints[0].Y) / EdgeLength);
+  end;
   PaintCanvas.Pen.Color := clRed;
   PaintCanvas.Pen.Width := 2;
   PaintCanvas.Line(TargetPoint.X - 7, TargetPoint.Y - 7,
